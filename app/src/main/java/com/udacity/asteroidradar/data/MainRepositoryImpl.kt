@@ -33,7 +33,7 @@ class MainRepositoryImpl(
                 Log.d(TAG, "getAllAsync: ${asteroids.size}")
                 database.insertAll(asteroids)
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
         }
     }
@@ -59,6 +59,14 @@ class MainRepositoryImpl(
 
     override fun getAll(): LiveData<List<Asteroid>> {
         return database.getAll()
+    }
+
+    override fun getTodayAsteroid(startDate: String, closeDate: String): LiveData<List<Asteroid>> {
+        return database.getTodayAsteroid(startDate, closeDate)
+    }
+
+    override fun deleteAll() {
+        database.deleteAll()
     }
 
     override fun getCount(): Int {

@@ -15,6 +15,7 @@ import com.udacity.asteroidradar.databinding.FragmentMainBinding
 
 class MainFragment : Fragment(), AsteroidAdapter.Interaction {
 
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,8 +26,7 @@ class MainFragment : Fragment(), AsteroidAdapter.Interaction {
 
         val factory = ViewModelFactory(AsteroidDatabase.getInstance(requireContext()))
 
-
-        val viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
 
         val asteroidAdapter = AsteroidAdapter(this)
 
@@ -64,12 +64,18 @@ class MainFragment : Fragment(), AsteroidAdapter.Interaction {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.show_all_menu -> viewModel.updateFilter(FilterUtil.VIEW_NEXT_WEEK_ASTEROIDS)
+            R.id.show_rent_menu -> viewModel.updateFilter(FilterUtil.VIEW_TODAY_ASTEROIDS)
+            R.id.show_buy_menu -> viewModel.updateFilter(FilterUtil.VIEW_SAVED_ASTEROIDS)
+        }
         return true
     }
 
     override fun onItemSelected(position: Int, item: Asteroid) {
         findNavController().navigate(
             MainFragmentDirections.actionShowDetail(item)
+
         )
     }
 }

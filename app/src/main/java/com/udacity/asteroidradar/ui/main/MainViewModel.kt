@@ -1,9 +1,7 @@
 package com.udacity.asteroidradar.ui.main
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.data.MainRepository
 import com.udacity.asteroidradar.data.api.get7DaysLaterDateFormatted
@@ -13,9 +11,30 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainViewModel(private val repository: MainRepository) : ViewModel() {
+class MainViewModel(private val repository: MainRepository) :
+    ViewModel() {
 
-    val asteroidsLiveData: LiveData<List<Asteroid>> get() = repository.getAll()
+    private val _asteroidsFilter = MutableLiveData<FilterUtil>(FilterUtil.VIEW_SAVED_ASTEROIDS)
+
+    val asteroidsLiveData: LiveData<List<Asteroid>> =
+        _asteroidsFilter.switchMap { asteroidFilter ->
+            when (asteroidFilter) {
+                FilterUtil.VIEW_SAVED_ASTEROIDS -> {
+                    repository.getAll()
+                }
+                FilterUtil.VIEW_TODAY_ASTEROIDS -> {
+                    repository.getTodayAsteroid(getTodayFormatted(), getTodayFormatted())
+                }
+                FilterUtil.VIEW_NEXT_WEEK_ASTEROIDS -> {
+                    repository.getTodayAsteroid(getTodayFormatted(), get7DaysLaterDateFormatted())
+                }
+                else -> {
+                    repository.getAll()
+                }
+
+            }
+        }
+
 
     private val _pictureOfDay = MutableLiveData<PictureOfDay>()
     val pictureOfDay get() = _pictureOfDay
@@ -37,6 +56,10 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
         }
     }
 
+    fun updateFilter(filter: FilterUtil) {
+        _asteroidsFilter.value = filter
+    }
+}
 //    private fun createDummyData() {
 //        var items = listOf<Asteroid>()
 //        for (i in 1..20) {
@@ -50,4 +73,3 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
 //        }
 //        _asteroidsLiveData.postValue(items)
 //    }
-}

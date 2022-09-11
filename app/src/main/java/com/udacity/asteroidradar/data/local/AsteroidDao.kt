@@ -22,4 +22,7 @@ interface AsteroidDao {
     @Query("delete from asteroid")
     fun deleteAll()
 
+    @Query("SELECT * FROM asteroid WHERE closeApproachDate >= :startDate AND closeApproachDate <= :closeDate order by closeApproachDate ASC")
+    fun getTodayAsteroid(startDate: String, closeDate: String): LiveData<List<Asteroid>>
+
 }

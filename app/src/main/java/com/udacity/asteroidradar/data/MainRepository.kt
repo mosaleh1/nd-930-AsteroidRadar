@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.data.api.get7DaysLaterDateFormatted
 import com.udacity.asteroidradar.data.api.getTodayFormatted
+import com.udacity.asteroidradar.data.local.AsteroidDao
 import com.udacity.asteroidradar.model.Asteroid
 
 interface MainRepository {
@@ -17,8 +18,11 @@ interface MainRepository {
 
     fun getAll(): LiveData<List<Asteroid>>
 
+    fun getTodayAsteroid(startDate: String, closeDate: String): LiveData<List<Asteroid>>
 
-    fun insertAll( asteroid: List<Asteroid>)
+    fun deleteAll()
 
-    fun getCount():Int
+    fun insertAll(asteroid: List<Asteroid>)
+
+    fun getCount(): Int
 }
