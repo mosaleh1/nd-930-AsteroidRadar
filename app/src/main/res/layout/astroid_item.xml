@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <data>
+
+        <variable
+            name="astroid"
+            type="com.udacity.asteroidradar.model.Asteroid" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+
+        <TextView
+            android:id="@+id/codeName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="@integer/header_max_lines"
+            android:textColor="#FFFFFF"
+            android:textAppearance="@style/header"
+            app:layout_constraintEnd_toStartOf="@id/isPotentiallyHazardous"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/astronomica_unit_explanation" />
+
+        <TextView
+            android:id="@+id/closeApproachDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/top_bottom_margin"
+            android:gravity="start"
+            android:textColor="#FFFFFF"
+            android:text="@{astroid.closeApproachDate}"
+            app:layout_constraintEnd_toEndOf="@id/codeName"
+            app:layout_constraintStart_toStartOf="@id/codeName"
+            app:layout_constraintTop_toBottomOf="@id/codeName"
+            tools:text="@string/close_approach_data_title" />
+
+
+        <ImageView
+            android:id="@+id/isPotentiallyHazardous"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:statusIcon="@{astroid.potentiallyHazardous}" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
